@@ -1,0 +1,27 @@
+{% extends 'Encyclopedia/default.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h1>New Record</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+    {{form.name | as_crispy_field}}
+    {{form.team_conference | as_crispy_field}}
+    {{form.team_division | as_crispy_field}}
+    {{form.team_founded | as_crispy_field}}
+    {{form.team_arena | as_crispy_field}}
+    {{form.team_location | as_crispy_field}}
+    {{form.team_gm | as_crispy_field}}
+    {{form.team_coach | as_crispy_field}}
+    {{form.team_owner | as_crispy_field}}
+    {{form.team_accolades | as_crispy_field}}
+    {{form.team_roster | as_crispy_field}}
+    {{form.team_bio | as_crispy_field }}
+    {{form.team_reference | as_crispy_field }}
+    {{form.image | as_crispy_field }}
+    <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+    <script>var editor = new MediumEditor('.editable');</script>
+
+{% endblock %}

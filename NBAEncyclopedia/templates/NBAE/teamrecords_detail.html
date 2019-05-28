@@ -1,0 +1,89 @@
+{% extends 'Encyclopedia/default.html' %}
+{% csrf_token %}
+{% block content %}
+
+    {% if teamrecords.image %}
+        <img src="{{ teamrecords.image.url }}">
+    {% endif %}
+        <h1 class="posttitle loader">{{ teamrecords.name }}</h1>
+    {% if teamrecords.is_verified == True %}
+        <span class="glyphicon glyphicon-check"></span>
+    {% endif %}
+
+    {% if teamrecords.team_conference %}
+        <h3>{{ teamrecords.team_conference }}</h3>
+    {% endif %}
+    {% if teamrecords.team_division %}
+        <h3>{{ teamrecords.team_division }}</h3>
+    {% endif %}
+    {% if teamrecords.team_founded%}
+        <h3>{{ teamrecords.team_founded }}</h3>
+    {% endif %}
+    {% if teamrecords.team_location %}
+        <h3>{{ teamrecords.team_location }}</h3>
+    {% endif %}
+    {% if teamrecords.team_gm %}
+        <h3>{{ teamrecords.team_gm }}</h3>
+    {% endif %}
+    {% if teamrecords.team_coach %}
+        <h3>{{ teamrecords.team_coach }}</h3>
+    {% endif %}
+    {% if teamrecords.team_owner %}
+        <h3>{{ teamrecords.team_owner }}</h3>
+    {% endif %}
+    {% if teamrecords.team_accolades %}
+        <h3>{{ teamrecords.team_accolades }}</h3>
+    {% endif %}
+    {% if teamrecords.team_roster %}
+        <h3>{{ teamrecords.team_roster }}</h3>
+    {% endif %}
+    {% if teamrecords.team_bio %}
+        <p class='postcontent' >{{ teamrecords.team_bio|safe|linebreaksbr }}</p>
+    {% endif %}
+    {% if teamrecords.team_reference %}
+        <h3>{{ teamrecords.team_reference }}</h3>
+    {% endif %}
+
+
+
+
+        {% if teamrecords.published_date %}
+            <div class="date postdate">
+                {{ teamrecords.published_date }}
+            </div>
+
+        {% else %}
+            <a class="btn btn-default" href="{% url 'NBAE:teamrecord_publish' pk=teamrecords.pk %}">Publish</a>
+        {% endif %}
+
+     {% if user.is_authenticated and user == teamrecords.author %}
+         <a class="btn btn-primary" href="{% url 'NBAE:updateteam' pk=teamrecords.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+         <a class="btn btn-primary" href="{% url 'NBAE:confirmteam' pk=teamrecords.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+      {% endif %}
+
+
+  {% if teamrecords.is_draft == False %}
+
+    <hr>
+    <a class="btn btn-primary btn-comment" href="{% url 'NBAE:add_comment_to_record' pk=teamrecords.pk %}">Add comment</a>
+  <div class="container">
+
+   {% for comment in teamrecords.comments.all %}
+  <br>
+      <p>{{ comment.text|safe|linebreaks }}</p>
+       {% if comment.author.userprofile.image %}
+          <p>Posted by: <strong><img src="{{ comment.author.userprofile.image.url }}" width="50" height="50">{{ comment.author }}</strong></p>
+       {% else %}
+            <p>Posted by: <strong>{{comment.author }}</strong></p>
+       {% endif %}
+            {{ comment.created_date }}
+      {% if user.is_authenticated and user == comment.author or comment.approved_comment and user == comment.author  %}
+            <a class="btn btn-default" href="{% url 'NBAE:comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+      {% endif %}
+  {% empty %}
+      <p>No comments posted.</p>
+  {% endfor %}
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'Encyclopedia/default.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <style>
+        .jumbotron{
+            background-color: #17408b;
+            color: white;
+        }
+    </style>
+   <div class="jumbotron">
+        <h2>Sign up</h2>
+    <form class=form-horizontal" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+      {% if error == None %}
+      {% else %}
+      {{ error }}
+      {% endif %}
+      {% if email_error == None %}
+      {% else %}
+      {{ email_error }}
+      {% endif %}
+    {{ form.username | as_crispy_field}}
+    {{ form.password | as_crispy_field}}
+    {{ form.email | as_crispy_field}}
+      <button class='col-md-auto btn btn-primary' type="submit">Sign up</button>
+    </form>
+   <a href="{% url 'login' %}">Already a Member? Click here</a>
+   </div>
+{% endblock %}

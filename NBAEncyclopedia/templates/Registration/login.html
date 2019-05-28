@@ -1,0 +1,26 @@
+{% extends 'Encyclopedia/default.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <style>
+        .jumbotron{
+            background-color: #17408b;
+            color: white;
+        }
+    </style>
+  <div class="jumbotron">
+
+    <h2 class="text-center">Log In</h2>
+    {% if form.errors %}
+        <p>Your username and password didn't match. Please try again!</p>
+    {% endif %}
+
+    <form method="POST">
+    {% csrf_token %}
+        {{ form.username | as_crispy_field}}
+        {{ form.password | as_crispy_field}}
+        <input type="submit" class='col-md-auto btn btn-primary' value="Login" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+    <a href="{% url 'NBAE:register' %}">Not a member? Click here</a>
+  </div>
+{% endblock %}
